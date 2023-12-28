@@ -1,0 +1,5 @@
+-Los estados y las props, las debemos tratar como si fueran imutables. Por lo tanto, si queremos cambiar un estado
+tenemos que crear un nuevo algo (array, objeto, valor...) y luego hacer un setX, y nunca usar el propio estado.
+-En react es muy usual, que un componente padre, le pase un estado hacia el hijo, y el hijo cambie dependiendo de ese estado.
+- La actualizacion de los estados, son asincronos.
+- Cualquier hook de react, no puede ir dentro de ninguna condición ni loop. Ya que react guarda internamente la posicion de cada uno, para saber cuando ejecutarlo.
