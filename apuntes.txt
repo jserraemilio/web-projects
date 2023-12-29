@@ -1,5 +1,44 @@
--Los estados y las props, las debemos tratar como si fueran imutables. Por lo tanto, si queremos cambiar un estado
-tenemos que crear un nuevo algo (array, objeto, valor...) y luego hacer un setX, y nunca usar el propio estado.
--En react es muy usual, que un componente padre, le pase un estado hacia el hijo, y el hijo cambie dependiendo de ese estado.
+### Info varia y algo de useState ->
+- Los estados y las props, las debemos tratar como si fueran imutables. Por lo tanto, si queremos cambiar un estado
+tenemos que crear un nuevo algo (array, objeto, valor...) y luego hacer un setState, y nunca usar el propio estado.
+- En react es muy usual, que un componente padre, le pase un estado hacia el hijo, y el hijo cambie dependiendo de ese estado.
 - La actualizacion de los estados, son asincronos.
-- Cualquier hook de react, no puede ir dentro de ninguna condición ni loop. Ya que react guarda internamente la posicion de cada uno, para saber cuando ejecutarlo.
+- Cualquier hook de react, NO puede ir dentro de ninguna condición ni loop. Ya que react guarda internamente la posicion de cada uno, para saber en que orden ejecutarlo.
+
+### useEffect ->
+Permite ejecutar codigo arbitrario (el codigo que tu quieras).
+Se suele usar para hacer data fetching, enviar datos a un backend (analiticas), suscribirse a eventos del DOM...
+Ahora bien, se ejecuta ese codigo dependiendo de unas dependencias.
+Si no usas dependencias, se ejecutara cuando se monte el componente y cada vez que este se vuelva a renderizar.
+Usar dependencias vacias, solo se ejecutara una vez, y es cuando se monte el componente.
+Y por último, si tiene dependencias, se ejecutará una vez al montarse el componente, y cada vez que esas dependencias cambien.
+Tiene un return que sirve para hacer un cleanup, que se deberá usar para limpiar los eventos suscritos, en caso de que nos hayamos suscrito a alguno usando el useEffect.
+
+### Custom hooks ->
+Para crear un custom hook, debemos usar el literal "use" al principio del nombre de una function (function useCatImage(){}).
+Dentro de los custom hooks, se pueden usar los propios hooks de React (en una function normal, no permite usar hooks de React).
+Principalmente se usan para extraer logica del componente (useStates, useEffects...), para convertirlo en una caja negra y poder reutilizarlo en más de un sitio.
+Siempre hay que evitar, pasar el setState de un custom hook para afuera. Siempre es mejor crear una function para hacer un "refresh/update" del estado interno del custom hook, pidiendo o no por parametro el nuevo valor (dependiendo del caso de uso, alomejor nos interesa o no, pasar por parametro el nuevo valor del estado), y eso si que lo podemos usar desde fuera.
+
+Casi siempre que hay un useEffect, deberia de ser un custom hook.
+Si quieres extraer logica y no usa ningun hook, no debe ser un custom hook, sino que un helper o un utils.
+
+### useRef -> 
+Permite crear una referencia mutable que persiste durante la vida del componente.
+Util para guardar cualquier valor mutable (id, elemento del dom, contador...), y que cada vez que cambia, no se vuelve a renderizar el componente (persiste durante los renderizados).
+Siempre se tiene que aceder al .current del useRef!!
+### Controlar formularios (el controlado, se refiere si es o no es, controlado por React) ->
+Hay 2 maneras de controlar formularios con React, la controlada y la NO controlada.
+1) La NO controlada es la más sencilla y óptima. Quiere decir que dependemos del DOM ya sea, obteniendo los datos del formulario via event o via useRef.
+2) La controlada, React controla que se escribe en los inputs, como se hace, cuando vamos a validarlo... Se usa un useState para controlar el input. Tiene muchas opciones para hacer validaciones, no depende del DOM y puede llegar a tener un codigo más ordenado.
+
+### useMemo ->
+Principalmente se usa cuando hay un problema gordo de performance y estamos seguros que usando useMemo arreglaria parte del problema. Si no hay un gran problema de performance, mejor no usar useMemo.
+Sirve para volver a calcular un valor, SOLO cuando cambian sus dependencias.
+Para usar useMemo, debemos de pasarle un callback que luego tendra un return de lo que se quiere calcular, y tambien una lista de dependencias.
+Por ejemplo, si tenemos un listado de 10k elementos, y queremos hacer un sort, solo queremos calcular el sort de los 10k elementos, cuando se hace el propio sort, y no cuando se vuelve a renderizar el componente por otro motivo.
+Se puede usar tambien para crear funciones una sola vez, para hacer esto, usamos dependencias vacias, y la funcion, le pasamos el parametro que necesita en vez de usar una variable que antes estaba fuera de la funcion.
+
+### useCallback ->
+Hace exactamente lo mismo que useMemo, pero esta pensado exclusivamente para funciones.
+Porque mejora la sintaxis, y ya no hace falta pasarle una callback con un return como con useMemo, sino que le pasas directamente la funcion y ya.
