@@ -42,3 +42,16 @@ Se puede usar tambien para crear funciones una sola vez, para hacer esto, usamos
 ### useCallback ->
 Hace exactamente lo mismo que useMemo, pero esta pensado exclusivamente para funciones.
 Porque mejora la sintaxis, y ya no hace falta pasarle una callback con un return como con useMemo, sino que le pasas directamente la funcion y ya.
+
+### useId -> 
+Nos da un identificador unico en toda la app, que nos sirve para poder usarlo en casos como el attr id de los elementos html.
+Este identificador unico, se comparte tanto en cliente como en servidor.
+NO se puede usar como attr key al hacer un .map.
+Por ejemplo, lo podriamos usar para el attr id y el attr htmlFor en un input y label de html.
+
+### useContext ->
+Un contexto nos provee unos datos para todos los componentes que tenga como children, de esta forma, podemos evitar el prop drilling.
+1. Crear contexto 
+2. Proveer context
+3. Consumir contexto
+Se puede usar un contexto para filtros, los themes, guardar y refrescar tokens (auth)
